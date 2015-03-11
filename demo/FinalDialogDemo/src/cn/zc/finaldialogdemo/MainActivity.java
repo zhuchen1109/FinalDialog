@@ -1,5 +1,6 @@
 package cn.zc.finaldialogdemo;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import cn.zc.finaldialogdemo.R;
 
 import cn.zc.finaldialog.DialogAction;
+import cn.zc.finaldialog.EffectType;
 import cn.zc.finaldialog.GravityEnum;
 import cn.zc.finaldialog.MaterialDialog;
 import cn.zc.finaldialog.Theme;
@@ -35,8 +37,11 @@ import java.io.File;
 /**
  * @author zc
  */
+@SuppressLint("NewApi")
 public class MainActivity extends ActionBarActivity implements FolderSelectorDialog.FolderSelectCallback {
 
+	private final static int DURATION = 2000;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

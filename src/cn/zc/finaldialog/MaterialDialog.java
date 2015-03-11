@@ -47,6 +47,7 @@ import android.widget.TextView;
 
 import cn.zc.finaldialog.R;
 import cn.zc.finaldialog.base.DialogBase;
+import cn.zc.finaldialog.effect.BaseEffects;
 import cn.zc.finaldialog.util.DialogUtils;
 import cn.zc.finaldialog.util.RecyclerUtil;
 import cn.zc.finaldialog.util.TypefaceHelper;
@@ -74,6 +75,11 @@ public class MaterialDialog extends DialogBase implements View.OnClickListener {
     protected View negativeButton;
     protected boolean isStacked;
     protected final int defaultItemColor;
+    /**
+     * animator duration
+     */
+    protected int duration;
+    protected EffectType effectstype;
     protected ListType listType;
     protected List<Integer> selectedIndicesList;
 
@@ -91,7 +97,7 @@ public class MaterialDialog extends DialogBase implements View.OnClickListener {
         return new ContextThemeWrapper(builder.context, darkTheme ? R.style.MD_Dark : R.style.MD_Light);
     }
 
-    @SuppressLint("InflateParams")
+    @SuppressLint({ "InflateParams", "NewApi" })
     protected MaterialDialog(Builder builder) {
         super(getTheme(builder));
         mBuilder = builder;
@@ -286,6 +292,12 @@ public class MaterialDialog extends DialogBase implements View.OnClickListener {
             title.setTextColor(Color.BLACK);
             content.setTextColor(Color.BLACK);
         }
+        
+        //effect type
+        this.effectstype = builder.effectstype;
+        if (builder.duration != -1) {
+        	this.duration = builder.duration;
+        }
     }
 
     private static int gravityIntToGravity(GravityEnum gravity) {
@@ -316,9 +328,20 @@ public class MaterialDialog extends DialogBase implements View.OnClickListener {
         super.onShow(dialog); // calls any external show listeners
         checkIfStackingNeeded();
         invalidateCustomViewAssociations();
+        if (effectstype != null) {
+        	start(effectstype);
+        }
     }
 
-    /**
+    private void start(EffectType type) {
+    	BaseEffects effect = type.getAnimator();
+    	if (duration != -1) {
+    		effect.setDuration(Math.abs(duration));
+    	}
+    	effect.start(view);
+	}
+
+	/**
      * To account for scrolling content and overscroll glows, the frame padding/margins sometimes
      * must be set on inner views. This is dependent on the visibility of the title bar and action
      * buttons. This method determines where the padding or margins are needed and applies them.
@@ -887,6 +910,8 @@ public class MaterialDialog extends DialogBase implements View.OnClickListener {
         protected int dividerColor;
         protected int backgroundColor;
         protected int itemColor;
+        protected int duration;
+        protected EffectType effectstype;
 
         @DrawableRes
         protected int listSelector;
@@ -1398,12 +1423,24 @@ public class MaterialDialog extends DialogBase implements View.OnClickListener {
             this.forceStacking = stacked;
             return this;
         }
+        
+        public Builder effect(EffectType effectstype) {
+        	this.effectstype = effectstype;
+        	return this;
+        }
+        
+        public Builder duration(int duration) {
+        	this.duration = duration;
+        	return this;
+        }
 
         public MaterialDialog build() {
             return new MaterialDialog(this);
         }
 
         public MaterialDialog show() {
+        	effect(EffectType.RotateLeft);
+            duration(2000);
             MaterialDialog dialog = build();
             dialog.show();
             return dialog;
