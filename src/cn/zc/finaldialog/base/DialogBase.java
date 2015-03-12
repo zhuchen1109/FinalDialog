@@ -1,6 +1,8 @@
 package cn.zc.finaldialog.base;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Paint;
@@ -15,7 +17,8 @@ import android.widget.TextView;
 /**
  * @author zc
  */
-public class DialogBase extends AlertDialog implements DialogInterface.OnShowListener {
+@SuppressLint("NewApi")
+public class DialogBase extends Dialog implements DialogInterface.OnShowListener {
 
     protected final static String POSITIVE = "POSITIVE";
     protected final static String NEGATIVE = "NEGATIVE";
@@ -24,6 +27,10 @@ public class DialogBase extends AlertDialog implements DialogInterface.OnShowLis
 
     protected DialogBase(Context context) {
         super(context);
+    }
+
+    protected DialogBase(Context context, int theme) {
+        super(context, theme);
     }
 
     protected void setVerticalMargins(View view, int topMargin, int bottomMargin) {
@@ -41,62 +48,8 @@ public class DialogBase extends AlertDialog implements DialogInterface.OnShowLis
             view.setLayoutParams(params);
     }
 
-    /**
-     * @deprecated Not supported by the Material dialog.
-     */
-    @Deprecated
-    @Override
-    public void setView(View view) {
-        throw new RuntimeException("This method is not supported by the MaterialDialog.");
-    }
-
     protected void setViewInternal(View view) {
-        super.setView(view);
-    }
-
-    /**
-     * @deprecated Not supported by the Material dialog.
-     */
-    @Deprecated
-    @Override
-    public void setView(View view, int viewSpacingLeft, int viewSpacingTop, int viewSpacingRight, int viewSpacingBottom) {
-        throw new RuntimeException("This method is not supported by the MaterialDialog.");
-    }
-
-    /**
-     * @deprecated Use setContent() instead.
-     */
-    @Deprecated
-    @Override
-    public void setMessage(CharSequence message) {
-        throw new RuntimeException("This method is not supported by the MaterialDialog, use setContent() instead.");
-    }
-
-    /**
-     * @deprecated Not supported by the Material dialog.
-     */
-    @Deprecated
-    @Override
-    public void setCustomTitle(View customTitleView) {
-        throw new RuntimeException("This method is not supported by the MaterialDialog.");
-    }
-
-    /**
-     * @deprecated Not supported by the Material dialog.
-     */
-    @Deprecated
-    @Override
-    public void setButton(int whichButton, CharSequence text, Message msg) {
-        throw new RuntimeException("Use setActionButton(MaterialDialog.Button, CharSequence) instead.");
-    }
-
-    /**
-     * @deprecated Not supported by the Material dialog.
-     */
-    @Deprecated
-    @Override
-    public void setButton(int whichButton, CharSequence text, OnClickListener listener) {
-        throw new RuntimeException("Use setActionButton(MaterialDialog.Button, CharSequence) instead.");
+        super.setContentView(view);
     }
 
     @Override

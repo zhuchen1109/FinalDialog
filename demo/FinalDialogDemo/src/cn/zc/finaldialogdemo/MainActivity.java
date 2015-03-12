@@ -33,6 +33,7 @@ import cn.zc.finaldialog.Theme;
 import cn.zc.finaldialog.ThemeSingleton;
 
 import java.io.File;
+import java.util.HashMap;
 
 /**
  * @author zc
@@ -40,8 +41,55 @@ import java.io.File;
 @SuppressLint("NewApi")
 public class MainActivity extends ActionBarActivity implements FolderSelectorDialog.FolderSelectCallback {
 
-	private final static int DURATION = 2000;
-	
+	private static int effectSize;
+	private static CharSequence[] effectKeys;
+	private static EffectType[] effects;
+
+	private final static int ANIMA_DURATION = 500;
+	private int duration = ANIMA_DURATION;
+	private EffectType mEffectType;
+	private MaterialDialog mAnimatorSelectedDialog;
+
+	static {
+	    effectSize = 15;
+	    effectKeys = new CharSequence[effectSize];
+	    effects = new EffectType[effectSize];
+
+	    int num = 0;
+	    effectKeys[num++] = "None";
+	    effectKeys[num++] = "Fadein";
+	    effectKeys[num++] = "Fall";
+	    effectKeys[num++] = "Fliph";
+	    effectKeys[num++] = "Flipv";
+	    effectKeys[num++] = "Newspager";
+	    effectKeys[num++] = "Slideleft";
+	    effectKeys[num++] = "Slidetop";
+	    effectKeys[num++] = "SlideBottom";
+	    effectKeys[num++] = "Slideright";
+	    effectKeys[num++] = "Slit";
+        effectKeys[num++] = "Shake";
+        effectKeys[num++] = "SideFall";
+        effectKeys[num++] = "RotateBottom";
+        effectKeys[num++] = "RotateLeft";
+
+	    num = 0;
+	    effects[num++] = null;
+	    effects[num++] = EffectType.Fadein;
+	    effects[num++] = EffectType.Fall;
+	    effects[num++] = EffectType.Fliph;
+	    effects[num++] = EffectType.Flipv;
+	    effects[num++] = EffectType.Newspager;
+	    effects[num++] = EffectType.Slideleft;
+        effects[num++] = EffectType.Slidetop;
+        effects[num++] = EffectType.SlideBottom;
+        effects[num++] = EffectType.Slideright;
+        effects[num++] = EffectType.Slit;
+        effects[num++] = EffectType.Shake;
+        effects[num++] = EffectType.Sidefill;
+        effects[num++] = EffectType.RotateBottom;
+        effects[num++] = EffectType.RotateLeft;
+	}
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -186,6 +234,8 @@ public class MainActivity extends ActionBarActivity implements FolderSelectorDia
                 .content(R.string.shareLocationPrompt)
                 .positiveText(R.string.agree)
                 .negativeText(R.string.disagree)
+                .effect(mEffectType)
+                .duration(duration)
                 .show();
     }
 
@@ -195,6 +245,8 @@ public class MainActivity extends ActionBarActivity implements FolderSelectorDia
                 .content(R.string.useGoogleLocationServicesPrompt)
                 .positiveText(R.string.agree)
                 .negativeText(R.string.disagree)
+                .effect(mEffectType)
+                .duration(duration)
                 .show();
     }
 
@@ -204,6 +256,8 @@ public class MainActivity extends ActionBarActivity implements FolderSelectorDia
                 .content(R.string.loremIpsum)
                 .positiveText(R.string.agree)
                 .negativeText(R.string.disagree)
+                .effect(mEffectType)
+                .duration(duration)
                 .show();
     }
 
@@ -214,6 +268,8 @@ public class MainActivity extends ActionBarActivity implements FolderSelectorDia
                 .content(R.string.useGoogleLocationServicesPrompt)
                 .positiveText(R.string.agree)
                 .negativeText(R.string.disagree)
+                .effect(mEffectType)
+                .duration(duration)
                 .show();
     }
 
@@ -224,6 +280,8 @@ public class MainActivity extends ActionBarActivity implements FolderSelectorDia
                 .positiveText(R.string.speedBoost)
                 .negativeText(R.string.noThanks)
                 .forceStacking(true)  // this generally should not be forced, but is used for demo purposes
+                .effect(mEffectType)
+                .duration(duration)
                 .show();
     }
 
@@ -234,6 +292,8 @@ public class MainActivity extends ActionBarActivity implements FolderSelectorDia
                 .positiveText(R.string.agree)
                 .negativeText(R.string.disagree)
                 .neutralText(R.string.more_info)
+                .effect(mEffectType)
+                .duration(duration)
                 .show();
     }
 
@@ -260,6 +320,8 @@ public class MainActivity extends ActionBarActivity implements FolderSelectorDia
                         Toast.makeText(getApplicationContext(), "Negative…", Toast.LENGTH_SHORT).show();
                     }
                 })
+                .effect(mEffectType)
+                .duration(duration)
                 .show();
     }
 
@@ -273,6 +335,8 @@ public class MainActivity extends ActionBarActivity implements FolderSelectorDia
                         Toast.makeText(getApplicationContext(), which + ": " + text, Toast.LENGTH_SHORT).show();
                     }
                 })
+                .effect(mEffectType)
+                .duration(duration)
                 .show();
     }
 
@@ -285,6 +349,8 @@ public class MainActivity extends ActionBarActivity implements FolderSelectorDia
                         Toast.makeText(getApplicationContext(), which + ": " + text, Toast.LENGTH_SHORT).show();
                     }
                 })
+                .effect(mEffectType)
+                .duration(duration)
                 .show();
     }
 
@@ -299,6 +365,8 @@ public class MainActivity extends ActionBarActivity implements FolderSelectorDia
                     }
                 })
                 .positiveText(android.R.string.ok)
+                .effect(mEffectType)
+                .duration(duration)
                 .show();
     }
 
@@ -313,6 +381,8 @@ public class MainActivity extends ActionBarActivity implements FolderSelectorDia
                     }
                 })
                 .positiveText(R.string.choose)
+                .effect(mEffectType)
+                .duration(duration)
                 .show();
     }
 
@@ -334,6 +404,8 @@ public class MainActivity extends ActionBarActivity implements FolderSelectorDia
                     }
                 })
                 .positiveText(R.string.choose)
+                .effect(mEffectType)
+                .duration(duration)
                 .show();
     }
 
@@ -341,6 +413,8 @@ public class MainActivity extends ActionBarActivity implements FolderSelectorDia
         MaterialDialog dialog = new MaterialDialog.Builder(this)
                 .title(R.string.socialNetworks)
                 .adapter(new ButtonItemAdapter(this, R.array.socialNetworks))
+                .effect(mEffectType)
+                .duration(duration)
                 .build();
 
         ListView listView = dialog.getListView();
@@ -375,7 +449,10 @@ public class MainActivity extends ActionBarActivity implements FolderSelectorDia
                     @Override
                     public void onNegative(MaterialDialog dialog) {
                     }
-                }).build();
+                })
+                .effect(mEffectType)
+                .duration(duration)
+                .build();
 
         positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
         passwordInput = (EditText) dialog.getCustomView().findViewById(R.id.password);
@@ -412,6 +489,8 @@ public class MainActivity extends ActionBarActivity implements FolderSelectorDia
                 .title(R.string.changelog)
                 .customView(R.layout.dialog_webview, false)
                 .positiveText(android.R.string.ok)
+                .effect(mEffectType)
+                .duration(duration)
                 .build();
         WebView webView = (WebView) dialog.getCustomView().findViewById(R.id.webview);
         webView.loadUrl("file:///android_asset/webview.html");
@@ -446,12 +525,14 @@ public class MainActivity extends ActionBarActivity implements FolderSelectorDia
                 .titleGravity(GravityEnum.CENTER)
                 .titleColorRes(R.color.material_red_400)
                 .contentColorRes(android.R.color.white)
-                .backgroundColorRes(R.color.material_blue_grey_800)
+                .backgroundColorRes(R.color.md_material_blue_800)
                 .dividerColorRes(R.color.material_pink_500)
                 .btnSelector(R.drawable.md_btn_selector_custom, DialogAction.POSITIVE)
                 .positiveColor(Color.WHITE)
                 .negativeColorAttr(android.R.attr.textColorSecondaryInverse)
                 .theme(Theme.DARK)
+                .effect(mEffectType)
+                .duration(duration)
                 .show();
     }
 
@@ -480,6 +561,8 @@ public class MainActivity extends ActionBarActivity implements FolderSelectorDia
                         Toast.makeText(getApplicationContext(), "onDismiss", Toast.LENGTH_SHORT).show();
                     }
                 })
+                .effect(mEffectType)
+                .duration(duration)
                 .show();
     }
 
@@ -500,6 +583,23 @@ public class MainActivity extends ActionBarActivity implements FolderSelectorDia
                     .build()
                     .show();
             return true;
+        } else if (item.getItemId() == R.id.animator) {
+            if (mAnimatorSelectedDialog == null) {
+                mAnimatorSelectedDialog = new MaterialDialog.Builder(this)
+                .title(R.string.animator)
+                .items(effectKeys)
+                .itemsCallbackSingleChoice(0, new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        mEffectType = effects[which];
+                        Toast.makeText(getApplicationContext(), which + ": " + text, Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .positiveText(R.string.choose)
+                .show();
+            } else {
+                mAnimatorSelectedDialog.show();
+            }
         }
         return super.onOptionsItemSelected(item);
     }

@@ -99,7 +99,8 @@ public class MaterialDialog extends DialogBase implements View.OnClickListener {
 
     @SuppressLint({ "InflateParams", "NewApi" })
     protected MaterialDialog(Builder builder) {
-        super(getTheme(builder));
+        //super(getTheme(builder));
+        super(builder.context, R.style.MD_Light);
         mBuilder = builder;
 
         if (!mBuilder.useCustomFonts) {
@@ -288,16 +289,14 @@ public class MaterialDialog extends DialogBase implements View.OnClickListener {
                 });
 
         if (builder.theme == Theme.LIGHT && Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-            setInverseBackgroundForced(true);
+            //setInverseBackgroundForced(true);
             title.setTextColor(Color.BLACK);
             content.setTextColor(Color.BLACK);
         }
-        
+
         //effect type
         this.effectstype = builder.effectstype;
-        if (builder.duration != -1) {
-        	this.duration = builder.duration;
-        }
+        this.duration = builder.duration;
     }
 
     private static int gravityIntToGravity(GravityEnum gravity) {
@@ -338,6 +337,7 @@ public class MaterialDialog extends DialogBase implements View.OnClickListener {
     	if (duration != -1) {
     		effect.setDuration(Math.abs(duration));
     	}
+    	//View view = getWindow().getDecorView();
     	effect.start(view);
 	}
 
@@ -910,7 +910,7 @@ public class MaterialDialog extends DialogBase implements View.OnClickListener {
         protected int dividerColor;
         protected int backgroundColor;
         protected int itemColor;
-        protected int duration;
+        protected int duration = -1;
         protected EffectType effectstype;
 
         @DrawableRes
@@ -941,7 +941,7 @@ public class MaterialDialog extends DialogBase implements View.OnClickListener {
                     a.recycle();
                 }
             } else {
-                TypedArray a = context.getTheme().obtainStyledAttributes(new int[]{R.attr.colorAccent});
+                TypedArray a = context.getTheme().obtainStyledAttributes(new int[]{android.R.attr.colorAccent});
                 try {
                     this.positiveColor = a.getColor(0, materialBlue);
                     this.negativeColor = a.getColor(0, materialBlue);
@@ -1423,12 +1423,12 @@ public class MaterialDialog extends DialogBase implements View.OnClickListener {
             this.forceStacking = stacked;
             return this;
         }
-        
+
         public Builder effect(EffectType effectstype) {
         	this.effectstype = effectstype;
         	return this;
         }
-        
+
         public Builder duration(int duration) {
         	this.duration = duration;
         	return this;
@@ -1439,8 +1439,6 @@ public class MaterialDialog extends DialogBase implements View.OnClickListener {
         }
 
         public MaterialDialog show() {
-        	effect(EffectType.RotateLeft);
-            duration(2000);
             MaterialDialog dialog = build();
             dialog.show();
             return dialog;
@@ -1495,26 +1493,6 @@ public class MaterialDialog extends DialogBase implements View.OnClickListener {
                 case NEGATIVE:
                     return view.findViewById(R.id.buttonDefaultNegative);
             }
-        }
-    }
-
-    /**
-     * This will not return buttons that are actually in the layout itself, since the layout doesn't
-     * contain buttons. This is only implemented to avoid crashing issues on Huawei devices. Huawei's
-     * stock OS requires this method in order to detect visible buttons.
-     *
-     * @deprecated Use getActionButton(com.afollestad.materialdialogs.DialogAction)} instead.
-     */
-    @Deprecated
-    @Override
-    public Button getButton(int whichButton) {
-        Log.w("MaterialDialog", "Warning: getButton() is a deprecated method that does not return valid references to action buttons.");
-        if (whichButton == AlertDialog.BUTTON_POSITIVE) {
-            return mBuilder.positiveText != null ? new Button(getContext()) : null;
-        } else if (whichButton == AlertDialog.BUTTON_NEUTRAL) {
-            return mBuilder.neutralText != null ? new Button(getContext()) : null;
-        } else {
-            return mBuilder.negativeText != null ? new Button(getContext()) : null;
         }
     }
 
@@ -1592,25 +1570,6 @@ public class MaterialDialog extends DialogBase implements View.OnClickListener {
      */
     public final void setTitle(@NonNull CharSequence title) {
         this.title.setText(title);
-    }
-
-    @Override
-    public void setIcon(@DrawableRes int resId) {
-        icon.setImageResource(resId);
-        icon.setVisibility(resId != 0 ? View.VISIBLE : View.GONE);
-    }
-
-    @Override
-    public void setIcon(Drawable d) {
-        icon.setImageDrawable(d);
-        icon.setVisibility(d != null ? View.VISIBLE : View.GONE);
-    }
-
-    @Override
-    public void setIconAttribute(@AttrRes int attrId) {
-        Drawable d = DialogUtils.resolveDrawable(mBuilder.context, attrId);
-        icon.setImageDrawable(d);
-        icon.setVisibility(d != null ? View.VISIBLE : View.GONE);
     }
 
     public final void setContent(CharSequence content) {

@@ -62,7 +62,7 @@ public abstract  class BaseEffects {
     public AnimatorSet getAnimatorSet() {
         return mAnimatorSet;
     }
-    
+
     public void setDuration(long duration) {
         this.mDuration = duration;
     }

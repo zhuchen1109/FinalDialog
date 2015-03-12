@@ -31,6 +31,7 @@
     <string name="connect">Connect</string>
 
     <string name="about">About</string>
+    <string name="animator">Select Animator</string>
     <string name="about_body"><![CDATA[
         final-dialog<br/>
         <a href=\'http://github.com/zhuchen1109\'>GitHub</a>&nbsp;&nbsp;
